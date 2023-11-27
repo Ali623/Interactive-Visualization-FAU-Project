@@ -1,4 +1,4 @@
-#! Virtualenv\Scripts\python.exe
+#! .venv\Scripts\python.exe
 
 import dlib
 import cv2
@@ -22,8 +22,8 @@ with open(output_csv, mode='w', newline='') as csv_file:
     header = ["Category"]
     
     # Add headers for distance columns
-    for i in range(0,51):
-        for j in range(i + 1, 51):
+    for i in range(0,49):
+        for j in range(i + 1, 49):
             header.append(f"Distance_{i}_{j}")
     
     csv_writer.writerow(header)
@@ -48,9 +48,9 @@ with open(output_csv, mode='w', newline='') as csv_file:
                         
                         # Initialize a row for the current image's landmarks
                         row = [category]
-                        
+                        landmark_points = [num for num in range(17, 68) if num not in (60, 64)]
                         # Extract X and Y coordinates for all 68 landmarks
-                        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in range(17,68)]
+                        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in landmark_points]
                         
                         # Calculate distances between each pair of points
                         distances = []

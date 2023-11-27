@@ -1,11 +1,12 @@
-#! Virtualenv\Scripts\python.exe
+#! .venv\Scripts\python.exe
 
 import pandas as pd
-from sklearn.decomposition import PCA
+from sklearn import datasets
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, f1_score
-from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
 import joblib
 
 # Load the CSV file containing facial landmarks with distances
@@ -14,33 +15,30 @@ data = pd.read_csv("facial_landmarks_with_distances.csv")
 # Extract features (X) and labels (y)
 X = data.drop("Category", axis=1)
 y = data["Category"]
-
-# Normalize the feature data (X)
-scaler = StandardScaler()
-X = scaler.fit_transform(X)
+y = y.values
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Perform PCA to reduce dimensionality
-pca = PCA(n_components=10)  # You can adjust the number of components
-X_train_pca = pca.fit_transform(X_train)
-X_test_pca = pca.transform(X_test)
+# Standardize the features by removing the mean and scaling to unit variance
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
-# Train an SVM classifier
-svm_classifier = SVC(kernel="linear", C=1.0)  # You can adjust the kernel and hyperparameters
-svm_classifier.fit(X_train_pca, y_train)
+# Create a Support Vector Machine classifier
+svm_classifier = SVC(kernel='linear', C = 0.25)
 
-# Make predictions
-y_pred = svm_classifier.predict(X_test_pca)
+# Train the classifier on the training data and collect training history
+history = svm_classifier.fit(X_train, y_train)
+
+# Make predictions on the testing data
+y_pred = svm_classifier.predict(X_test)
 
 # Calculate accuracy
 accuracy = accuracy_score(y_test, y_pred)
-f1 = f1_score(y_test, y_pred, average= "weighted")
-
-print("F1 Score:", f1)
-print("Accuracy:", accuracy)
+f1_sco = f1_score(y_test, y_pred, average="weighted")
+print(f'Accuracy: {accuracy}')
+print(f'f1_Score: {f1_sco}')
 
 # Save the models to files
 joblib.dump(svm_classifier, 'svm_model.joblib')
-joblib.dump(pca, 'pca_model.joblib')

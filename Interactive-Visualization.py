@@ -1,4 +1,4 @@
-#! Virtualenv\Scripts\python.exe
+#! .venv\Scripts\python.exe
 
 import cv2
 import dlib
@@ -7,6 +7,10 @@ import numpy as np
 from sklearn.decomposition import PCA
 import itertools
 from keras.models import load_model
+import mean_std_ofdata as ms
+
+# find mean and std of the dataset to normalize the input data
+d_mean, d_std = ms.mean_std_of_data("facial_landmarks_with_distances.csv")
 
 # Load the face detector and facial landmarks predictor
 detector = dlib.get_frontal_face_detector()
@@ -14,10 +18,6 @@ predictor = dlib.shape_predictor(r"archive\Cascades\shape_predictor_68_face_land
 
 # Load the saved models
 #classifier = joblib.load('svm_model.joblib')
-#pca = joblib.load('pca_model.joblib')
-
-# Load the saved models
-#classifier = joblib.load('decision_tree_model.joblib')
 #pca = joblib.load('pca_model.joblib')
 
 # Load the saved models
@@ -42,8 +42,9 @@ while True:
         # Get the facial landmarks
         landmarks = predictor(gray, face)
 
+        landmark_points = [num for num in range(17, 68) if num not in (60, 64)]
         # Extract X and Y coordinates for all 68 landmarks
-        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in range(17, 68)]
+        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in landmark_points]
 
         # Draw points on the face
         for (x, y) in landmarks_list:
@@ -64,8 +65,10 @@ while True:
 
         # Convert distances to a numpy array and perform PCA
         distances_array = np.array(distances).reshape(1, -1)
+        
+        normalized_distances_array = (distances_array-d_mean)/d_std
         #distances_normalized = scaler.fit_transform(distances_array)
-        distances_pca = pca.transform(distances_array)
+        distances_pca = pca.transform(normalized_distances_array)
 
         # Make a prediction using the SVM classifier
         prediction = classifier.predict(distances_pca)

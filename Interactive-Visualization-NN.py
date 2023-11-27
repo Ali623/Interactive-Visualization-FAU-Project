@@ -1,4 +1,4 @@
-#! Virtualenv\Scripts\python.exe
+#! .venv\Scripts\python.exe
 
 import cv2
 import dlib
@@ -7,6 +7,10 @@ import numpy as np
 from sklearn.decomposition import PCA
 import itertools
 from keras.models import load_model
+import mean_std_ofdata as ms
+
+# find mean and std of the dataset to normalize the input data
+d_mean, d_std = ms.mean_std_of_data("facial_landmarks_with_distances.csv")
 
 # Load the face detector and facial landmarks predictor
 detector = dlib.get_frontal_face_detector()
@@ -32,8 +36,9 @@ while True:
         # Get the facial landmarks
         landmarks = predictor(gray, face)
 
+        landmark_points = [num for num in range(17, 68) if num not in (60, 64)]
         # Extract X and Y coordinates for all 68 landmarks
-        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in range(17, 68)]
+        landmarks_list = [(landmarks.part(i).x, landmarks.part(i).y) for i in landmark_points]
 
         # Draw points on the face
         for (x, y) in landmarks_list:
@@ -54,11 +59,13 @@ while True:
 
         # Convert distances to a numpy array and perform PCA
         distances_array = np.array(distances).reshape(1, -1)
+        
 
+        normalized_distances_array = (distances_array-d_mean)/d_std
         # Make a prediction using the SVM classifier
-        prediction = classifier.predict(distances_array)
+        prediction = classifier.predict(normalized_distances_array)
         # prediction for NN
-        labels = ["anger","contempt","disgust","fear","happiness","neutrality","sadness","surprise"]
+        labels = ["anger","fear","happiness","neutrality","sadness","surprise"]
         prediction = [labels[prediction[0].argmax()]]
         # Display the prediction on the frame
         cv2.putText(frame, f"Prediction: {prediction[0]}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
