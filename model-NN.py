@@ -36,36 +36,24 @@ y_encoded = encoder.fit_transform(y.reshape(-1,1))
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
 
-"""# Perform PCA to reduce dimensionality (adjust the number of components based on your needs)
-pca = PCA(n_components=10)
-X_train_pca = pca.fit_transform(X_train)
-X_test_pca = pca.transform(X_test)"""
+# Perform PCA to reduce dimensionality (adjust the number of components based on your needs)
+# pca = PCA(n_components=10)
+# X_train_pca = pca.fit_transform(X_train)
+# X_test_pca = pca.transform(X_test)
 
 # Build a neural network
 model = Sequential()
 model.add(Dense(64, input_dim=1176, activation='relu'))
 model.add(BatchNormalization())
-# model.add(Dropout(0.5))  
+ 
 
 model.add(Dense(32, activation='relu'))
 model.add(BatchNormalization())
-# model.add(Dropout(0.5))
 
-# model.add(Dense(128, activation='relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.5))
-
-# model.add(Dense(64, activation='relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.5))
-
-# model.add(Dense(32, activation='relu'))
-# model.add(BatchNormalization())
-# model.add(Dropout(0.5))
 
 model.add(Dense(16, activation='relu'))
 model.add(BatchNormalization())
-# model.add(Dropout(0.5))
+
 
 model.add(Dense(6, activation='softmax')) 
 
