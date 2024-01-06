@@ -11,8 +11,8 @@ face_cascade = cv2.CascadeClassifier(r"archive\Cascades\haarcascade_frontalface_
 predictor = dlib.shape_predictor(r"archive\Cascades\shape_predictor_68_face_landmarks.dat")
 
 # Root folder with subfolders as categories
-root_folder = r"archive\fer_ckplus_kdef"
-output_csv = "facial_landmarks_with_distances.csv"
+root_folder = r"archive\fer_ckplus_kdef_Copy"
+output_csv = "facial_landmarks_with_distances_temp.csv"
 
 # Initialize the CSV file for writing
 with open(output_csv, mode='w', newline='') as csv_file:

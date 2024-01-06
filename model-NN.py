@@ -43,7 +43,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2,
 
 # Build a neural network
 model = Sequential()
-model.add(Dense(64, input_dim=1176, activation='relu'))
+model.add(Dense(32, input_dim=1176, activation='relu'))
 model.add(BatchNormalization())
  
 
