@@ -25,10 +25,10 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Create a base SVM model
-base_svm = SVC(kernel='linear', C=0.5)
+base_svm = SVC(kernel='linear', C=0.25)
 
 # Create a BaggingClassifier with SVM as the base estimator
-ensemble_svm = BaggingClassifier(base_svm, n_estimators=10, random_state=42)
+ensemble_svm = BaggingClassifier(base_svm, n_estimators=50, random_state=42)
 
 # Train the ensemble SVM on the training data
 ensemble_svm.fit(X_train, y_train)

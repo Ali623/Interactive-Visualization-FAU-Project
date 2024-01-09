@@ -25,7 +25,7 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Create a base SVM model
-base_svm = SVC(kernel='linear', C=0.7)
+base_svm = SVC(kernel='rbf', C=2)
 
 # Create a BaggingClassifier with SVM as the base estimator
 ensemble_svm = BaggingClassifier(base_svm, n_estimators=50, random_state=42)
@@ -41,4 +41,4 @@ accuracy = accuracy_score(y_test, ensemble_predictions)
 print(f'Ensemble Accuracy: {accuracy}')
 
 # Save the models to files
-# joblib.dump(ensemble_svm, 'random_forest_model.joblib')
+joblib.dump(ensemble_svm, 'random_forest_model_pairwise.joblib')

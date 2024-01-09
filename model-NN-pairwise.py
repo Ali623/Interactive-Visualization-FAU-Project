@@ -47,8 +47,8 @@ model = Sequential()
 model.add(Dense(64, input_dim=50, activation='relu',kernel_regularizer=l2(0.1)))
 model.add(BatchNormalization())
 
-model.add(Dense(64, activation='relu',kernel_regularizer=l2(0.1)))
-model.add(BatchNormalization())
+# model.add(Dense(64, activation='relu',kernel_regularizer=l2(0.1)))
+# model.add(BatchNormalization())
 
 model.add(Dense(32, activation='relu',kernel_regularizer=l2(0.1)))
 model.add(BatchNormalization())

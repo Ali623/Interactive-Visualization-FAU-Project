@@ -62,10 +62,10 @@ optimizer = Adam(learning_rate=0.001)
 model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
 
 # Implement early stopping
-early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+early_stopping = EarlyStopping(monitor='val_loss', patience=100, restore_best_weights=True)
 
 # Train the neural network
-history = model.fit(X_train, y_train, epochs=30, batch_size=32, validation_data=(X_test, y_test), callbacks=[early_stopping])
+history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test), callbacks=[early_stopping])
 
 # Evaluate the model
 y_pred = model.predict(X_test)
@@ -78,4 +78,4 @@ print("F1 Score:", f1)
 print("Accuracy:", accuracy)
 
 # Save the model to a file
-#model.save('nn_model.h5')
+model.save('nn_model.h5')

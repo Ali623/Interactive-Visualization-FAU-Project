@@ -47,5 +47,5 @@ accuracy = accuracy_score(y_test, ensemble_predictions)
 print(f'Ensemble Accuracy: {accuracy}')
 
 # Save the models to files
-joblib.dump(ensemble_svm, 'random_forest_model.joblib')
+joblib.dump(ensemble_svm, 'random_forest_model_PCA.joblib')
 joblib.dump(pca, 'SVM_ensemble_pca100_model.joblib')

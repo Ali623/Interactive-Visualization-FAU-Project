@@ -6,7 +6,6 @@ import joblib
 import numpy as np
 from sklearn.decomposition import PCA
 import itertools
-from keras.models import load_model
 import mean_std_ofdata as ms
 
 # find mean and std of the dataset to normalize the input data
@@ -17,12 +16,12 @@ detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(r"archive\Cascades\shape_predictor_68_face_landmarks.dat")
 
 # Load the saved models
-#classifier = joblib.load('svm_model.joblib')
+classifier = joblib.load('svm_model.joblib')
 #pca = joblib.load('pca_model.joblib')
 
 # Load the saved models
-classifier = joblib.load('random_forest_model.joblib')
-pca = joblib.load('pca_model.joblib')
+# classifier = joblib.load('random_forest_model.joblib')
+# pca = joblib.load('pca_model.joblib')
 
 
 # Initialize the camera for real-time video capture
@@ -68,10 +67,10 @@ while True:
         
         normalized_distances_array = (distances_array-d_mean)/d_std
         #distances_normalized = scaler.fit_transform(distances_array)
-        distances_pca = pca.transform(normalized_distances_array)
+        #distances_pca = pca.transform(normalized_distances_array)
 
         # Make a prediction using the SVM classifier
-        prediction = classifier.predict(distances_pca)
+        prediction = classifier.predict(normalized_distances_array)
         # Display the prediction on the frame
         cv2.putText(frame, f"Prediction: {prediction[0]}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 

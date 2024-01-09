@@ -47,5 +47,5 @@ print(f'Accuracy: {accuracy}')
 print(f'f1_Score: {f1_sco}')
 
 # Save the models to files
-joblib.dump(svm_classifier, 'svm_model.joblib')
-joblib.dump(pca, 'SVM_pca100_model.joblib')
+joblib.dump(svm_classifier, 'svm_PCA100_model.joblib')
+joblib.dump(pca, 'PCA100_model(svm).joblib')
