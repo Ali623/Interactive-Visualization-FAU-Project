@@ -1,4 +1,4 @@
-# Interactive-Visualization-FAU-Project
+# Interactive-Visualization-Project
 
 ## Pipeline work-flow
 
